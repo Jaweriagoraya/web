@@ -1,0 +1,105 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: orange;
+  padding: 10px 20px;
+}
+header .logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+}
+nav ul {
+  display: flex;
+  list-style: none;
+}
+nav ul li {
+  margin: 0 15px;
+}
+nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+.search-bar {
+  display: flex;
+}
+.search-bar input {
+  padding: 5px;
+}
+.search-bar button {
+  background: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Hero */
+.hero img {
+  width: 100%;
+  height: auto;
+}
+
+/* Categories */
+.categories {
+  padding: 20px;
+  text-align: center;
+}
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-top: 15px;
+}
+.category {
+  background: #f2f2f2;
+  padding: 20px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+/* Products */
+.products {
+  padding: 20px;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.product {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+.product img {
+  width: 100%;
+  height: auto;
+}
+.product p {
+  margin: 10px 0;
+  font-weight: bold;
+}
+.product span {
+  color: green;
+  font-weight: bold;
+}
+
+/* Footer */
+footer {
+  background: #333;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  margin-top: 20px;
+}
+
