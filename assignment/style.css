@@ -293,7 +293,7 @@ position:relative;
 }
 
 
-/* Optional dark overlay */
+
 
 .promo-banner::before{
 
@@ -365,7 +365,7 @@ background:#f8f8f8;
 }
 
 
-/* SLIDER */
+
 
 .category-slider{
 
@@ -386,7 +386,6 @@ display:none;
 }
 
 
-/* CARD */
 
 .category-card{
 
@@ -559,6 +558,11 @@ overflow:hidden;
 cursor:pointer;
 
 }
+.kids-category-card{
+padding:40px;
+
+}
+
 
 
 .kids-category-card img{
@@ -617,6 +621,8 @@ justify-content:center;
 position:relative;
 
 }
+
+
 
 
 .girls-banner::before{
@@ -710,6 +716,11 @@ overflow:hidden;
 cursor:pointer;
 
 }
+.girls-category-card{
+padding:40px;
+
+}
+
 
 
 .girls-category-card img{
@@ -747,6 +758,147 @@ background:white;
 padding:12px 30px;
 
 margin:0;
+
+}
+.subscribe{
+
+background:#f3f3f3;
+
+padding:120px 0;
+
+position:relative;
+
+overflow:hidden;
+
+}
+
+
+.subscribe-container{
+
+position:relative;
+
+max-width:1200px;
+
+margin:auto;
+
+height:400px;
+
+}
+
+
+
+/* CENTER TEXT */
+
+.subscribe-content{
+
+position:absolute;
+
+top:50%;
+
+left:50%;
+
+transform:translate(-50%,-50%);
+
+text-align:center;
+
+}
+
+
+.subscribe-content h2{
+
+font-size:60px;
+
+margin-bottom:30px;
+
+}
+
+
+
+/* EMAIL BOX */
+
+.subscribe-box{
+
+display:flex;
+
+}
+
+
+.subscribe-box input{
+
+padding:15px;
+
+width:350px;
+
+border:none;
+
+outline:none;
+
+}
+
+
+.subscribe-box button{
+
+padding:15px 30px;
+
+background:#111;
+
+color:white;
+
+border:none;
+
+cursor:pointer;
+
+}
+
+
+
+/* IMAGES */
+
+.sub-img{
+
+position:absolute;
+
+width:180px;
+
+border-radius:20px;
+
+}
+
+
+/* POSITION */
+
+.sub-img1{
+
+top:0;
+
+left:0;
+
+}
+
+
+.sub-img2{
+
+top:0;
+
+right:0;
+
+}
+
+
+.sub-img3{
+
+bottom:0;
+
+right:0px;
+
+}
+
+
+.sub-img4{
+
+bottom:0;
+
+left:150px;
 
 }
 
