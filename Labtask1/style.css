@@ -849,5 +849,141 @@ bottom:0;
 left:150px;
 
 }
+/* ---------- RESPONSIVE DESIGN ---------- */
 
+/* Tablet */
+@media (max-width:992px){
 
+.navbar{
+padding:15px 30px;
+flex-wrap:wrap;
+}
+
+.nav-left{
+gap:15px;
+font-size:14px;
+}
+
+.nav-right input{
+width:150px;
+}
+
+.hero-text h1{
+font-size:70px;
+}
+
+.hero-text h2{
+font-size:28px;
+}
+
+.shirt-card{
+min-width:250px;
+}
+
+.category-card{
+min-width:250px;
+}
+
+.kids-category-card{
+min-width:250px;
+}
+
+.girls-category-card{
+min-width:250px;
+}
+
+.subscribe-content h2{
+font-size:45px;
+}
+
+.subscribe-box input{
+width:250px;
+}
+
+}
+
+/* Mobile */
+@media (max-width:768px){
+
+.navbar{
+flex-direction:column;
+gap:15px;
+padding:20px;
+}
+
+.nav-left{
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.nav-right{
+justify-content:center;
+}
+
+.hero{
+height:70vh;
+}
+
+.hero-text h1{
+font-size:50px;
+}
+
+.hero-text h2{
+font-size:24px;
+}
+
+.hero-text p{
+font-size:16px;
+}
+
+.shirt-card{
+min-width:220px;
+}
+
+.category-card{
+min-width:220px;
+}
+
+.kids-category-card{
+min-width:220px;
+}
+
+.girls-category-card{
+min-width:220px;
+}
+
+.banner-content h2{
+font-size:35px;
+}
+
+.banner-content p{
+font-size:20px;
+}
+
+.kids-banner-text h2{
+font-size:35px;
+}
+
+.girls-banner-text h2{
+font-size:35px;
+}
+
+.subscribe-content h2{
+font-size:35px;
+}
+
+.subscribe-box{
+flex-direction:column;
+align-items:center;
+gap:10px;
+}
+
+.subscribe-box input{
+width:220px;
+}
+
+.sub-img{
+width:120px;
+}
+
+}
