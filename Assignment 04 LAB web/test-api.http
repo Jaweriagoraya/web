@@ -1,0 +1,62 @@
+### REST API Testing File
+### You can use this file with the "REST Client" extension in VS Code
+### 1. Install "REST Client" by Huachao Mao in your VS Code Extensions
+### 2. Click "Send Request" above each endpoint
+
+@baseUrl = http://localhost:3000/api/v1
+
+### ---------------------------------------------------------
+### 1. Public Endpoints
+### ---------------------------------------------------------
+
+### Get all products (with optional pagination/filters)
+GET {{baseUrl}}/products?page=1
+
+###
+
+### Get a single product (Replace the ID below with a real product ID from the above request)
+GET {{baseUrl}}/products/REPLACE_WITH_PRODUCT_ID
+
+### ---------------------------------------------------------
+### 2. Authentication
+### ---------------------------------------------------------
+
+### Login User (Replace with an email/password you registered via the website)
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+###
+
+### Extract the token from the login response to use in protected routes below
+### Copy the "token" value from the response and replace "YOUR_TOKEN_HERE" below.
+
+### ---------------------------------------------------------
+### 3. Protected Endpoints (Require valid JWT Token)
+### ---------------------------------------------------------
+
+### Get Authenticated User Profile
+GET {{baseUrl}}/user/profile
+Authorization: Bearer YOUR_TOKEN_HERE
+
+###
+
+### Submit a New Order
+POST {{baseUrl}}/orders
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+{
+  "products": [
+    {
+      "product": "REPLACE_WITH_PRODUCT_ID",
+      "quantity": 2
+    }
+  ],
+  "totalAmount": 1999
+}
