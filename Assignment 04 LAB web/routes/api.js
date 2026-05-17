@@ -91,6 +91,11 @@ router.post("/auth/login", async (req, res) => {
             return res.status(401).json({ error: 'Invalid email or password.' });
         }
 
+        if (!process.env.JWT_SECRET) {
+            console.error('JWT_SECRET is not configured');
+            return res.status(500).json({ error: 'JWT configuration error' });
+        }
+
         // Generate JWT
         const token = jwt.sign(
             { user_id: user._id, role: user.role },

@@ -29,120 +29,13 @@ function validateProductData(body) {
     return errors;
 }
 
-// Apply admin protection to all routes in this file
-router.use(isAdmin);
+// --- PUBLIC Admin Routes (no auth required) ---
 
-router.get("/", async (req, res) => {
-    const products = await Product.find({
-        image: { $exists: true, $ne: "" },
-        name: { $not: /coffee maker/i }
-    });
-    res.render("admin/dashboard", {
-        products,
-        activePage: "dashboard",
-        pageTitle: "Dashboard",
-        subtitle: "Manage your product inventory and monitor stock",
-    });
-});
-
-router.get("/add", (req, res) => {
-    res.render("admin/add", {
-        activePage: "add",
-        pageTitle: "Add Product",
-        categories,
-        formData: {},
-        errors: []
-    });
-});
-
-router.post("/add", upload.single("image"), async (req, res) => {
-    const errors = validateProductData(req.body);
-    if (errors.length) {
-        return res.status(400).render("admin/add", {
-            activePage: "add",
-            pageTitle: "Add Product",
-            categories,
-            formData: req.body,
-            errors
-        });
-    }
-
-    try {
-        const { name, price, category, rating, stock } = req.body;
-        const product = new Product({
-            name: name.trim(),
-            price: Number(price),
-            category,
-            rating: rating ? Number(rating) : 0,
-            stock: Number(stock),
-            image: req.file ? "/uploads/" + req.file.filename : "/1.avif"
-        });
-        await product.save();
-        res.redirect("/admin");
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Failed to add product.");
-    }
-});
-
-router.get("/edit/:id", async (req, res) => {
-    try {
-        const product = await Product.findById(req.params.id);
-        if (!product) return res.status(404).send("Product not found.");
-        res.render("admin/edit", {
-            product,
-            activePage: "dashboard",
-            pageTitle: "Edit Product",
-            categories,
-            errors: []
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Failed to load product.");
-    }
-});
-
-router.put("/edit/:id", upload.single("image"), async (req, res) => {
-    const errors = validateProductData(req.body);
-    try {
-        const product = await Product.findById(req.params.id);
-        if (!product) return res.status(404).send("Product not found.");
-        if (errors.length) {
-            return res.status(400).render("admin/edit", {
-                product,
-                activePage: "dashboard",
-                pageTitle: "Edit Product",
-                categories,
-                errors
-            });
-        }
-        product.name = req.body.name.trim();
-        product.price = Number(req.body.price);
-        product.category = req.body.category;
-        product.rating = req.body.rating ? Number(req.body.rating) : 0;
-        product.stock = Number(req.body.stock);
-        if (req.file) product.image = "/uploads/" + req.file.filename;
-        await product.save();
-        res.redirect("/admin");
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Failed to update product.");
-    }
-});
-
-router.delete("/delete/:id", async (req, res) => {
-    try {
-        await Product.findByIdAndDelete(req.params.id);
-        res.redirect("/admin");
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Failed to delete product.");
-    }
-});
-
-// Separate Admin Login
 router.get('/login', (req, res) => {
-    res.render('admin/login', { error: req.flash('error') });
+    res.render('admin/login', {
+        error: req.flash('error'),
+        success: req.flash('success')
+    });
 });
 
 router.post('/login', async (req, res) => {
@@ -173,5 +66,170 @@ router.get('/logout', (req, res) => {
         res.redirect('/admin/login');
     });
 });
+
+router.get('/register', (req, res) => {
+    res.render('admin/register', {
+        error: req.flash('error'),
+        success: req.flash('success'),
+        formData: {}
+    });
+});
+
+router.post('/register', async (req, res) => {
+    const { name, email, password, confirmPassword } = req.body;
+    const errors = [];
+
+    if (!name || !name.trim()) errors.push('Full name is required.');
+    if (!email || !email.trim()) errors.push('Email is required.');
+    if (!password || password.length < 6) errors.push('Password must be at least 6 characters.');
+    if (password !== confirmPassword) errors.push('Passwords do not match.');
+
+    if (errors.length) {
+        return res.render('admin/register', {
+            error: errors,
+            success: [],
+            formData: { name, email }
+        });
+    }
+
+    try {
+        const existing = await User.findOne({ email: email.toLowerCase().trim() });
+        if (existing) {
+            return res.render('admin/register', {
+                error: ['An account with this email already exists.'],
+                success: [],
+                formData: { name, email }
+            });
+        }
+        const user = new User({
+            name: name.trim(),
+            email: email.toLowerCase().trim(),
+            password,
+            role: 'admin'
+        });
+        await user.save();
+        req.flash('success', 'Admin account created! You can now log in.');
+        res.redirect('/admin/login');
+    } catch (err) {
+        console.error(err);
+        res.render('admin/register', {
+            error: ['Something went wrong. Please try again.'],
+            success: [],
+            formData: { name, email }
+        });
+    }
+});
+
+// --- PROTECTED Admin Routes (isAdmin required) ---
+
+router.get("/", isAdmin, async (req, res) => {
+    const products = await Product.find({
+        image: { $exists: true, $ne: "" },
+        name: { $not: /coffee maker/i }
+    });
+    res.render("admin/dashboard", {
+        products,
+        activePage: "dashboard",
+        pageTitle: "Dashboard",
+        subtitle: "Manage your product inventory and monitor stock",
+    });
+});
+
+router.get("/add", isAdmin, (req, res) => {
+    res.render("admin/add", {
+        activePage: "add",
+        pageTitle: "Add Product",
+        categories,
+        formData: {},
+        errors: []
+    });
+});
+
+router.post("/add", isAdmin, upload.single("image"), async (req, res) => {
+    const errors = validateProductData(req.body);
+    if (errors.length) {
+        return res.status(400).render("admin/add", {
+            activePage: "add",
+            pageTitle: "Add Product",
+            categories,
+            formData: req.body,
+            errors
+        });
+    }
+
+    try {
+        const { name, price, category, rating, stock } = req.body;
+        const product = new Product({
+            name: name.trim(),
+            price: Number(price),
+            category,
+            rating: rating ? Number(rating) : 0,
+            stock: Number(stock),
+            image: req.file ? "/uploads/" + req.file.filename : "/1.avif"
+        });
+        await product.save();
+        res.redirect("/admin");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Failed to add product.");
+    }
+});
+
+router.get("/edit/:id", isAdmin, async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        if (!product) return res.status(404).send("Product not found.");
+        res.render("admin/edit", {
+            product,
+            activePage: "dashboard",
+            pageTitle: "Edit Product",
+            categories,
+            errors: []
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Failed to load product.");
+    }
+});
+
+router.put("/edit/:id", isAdmin, upload.single("image"), async (req, res) => {
+    const errors = validateProductData(req.body);
+    try {
+        const product = await Product.findById(req.params.id);
+        if (!product) return res.status(404).send("Product not found.");
+        if (errors.length) {
+            return res.status(400).render("admin/edit", {
+                product,
+                activePage: "dashboard",
+                pageTitle: "Edit Product",
+                categories,
+                errors
+            });
+        }
+        product.name = req.body.name.trim();
+        product.price = Number(req.body.price);
+        product.category = req.body.category;
+        product.rating = req.body.rating ? Number(req.body.rating) : 0;
+        product.stock = Number(req.body.stock);
+        if (req.file) product.image = "/uploads/" + req.file.filename;
+        await product.save();
+        res.redirect("/admin");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Failed to update product.");
+    }
+});
+
+router.delete("/delete/:id", isAdmin, async (req, res) => {
+    try {
+        await Product.findByIdAndDelete(req.params.id);
+        res.redirect("/admin");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Failed to delete product.");
+    }
+});
+
+
 
 module.exports = router;

@@ -1,40 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Admin Login</title>
-        <link rel="stylesheet" href="/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .auth-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1.5px solid var(--border, #e5e7eb);
+        }
+        .auth-tab {
+            flex: 1;
+            padding: 0.6rem 1rem;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--muted, #6b7280);
+            background: transparent;
+            transition: background 0.2s, color 0.2s;
+        }
+        .auth-tab.active {
+            background: #2563eb;
+            color: #fff;
+        }
+        .auth-tab:hover:not(.active) {
+            background: var(--hover, #f3f4f6);
+            color: var(--text, #111);
+        }
+        .flash-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+            border-radius: 8px;
+            padding: 0.65rem 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.93rem;
+        }
+    </style>
 </head>
 <body>
-        <main class="auth-wrap">
-            <div class="auth-card center">
-                <div class="brand">
-                    <div class="logo">E</div>
-                    <div>
-                        <h2>Engine Shop</h2>
-                        <div style="color:var(--muted);font-size:0.95rem">Admin access area</div>
-                    </div>
-                </div>
+    <main class="auth-wrap">
+        <div class="auth-card center">
+            <div class="brand">
+                <div class="logo">E</div>
                 <div>
-                    <h1>Admin <span style="color:#2563eb">Login</span></h1>
-            <% if (error && error.length) { %>
-                <div class="flash-error"><%= error[0] %></div>
-            <% } %>
-            <form action="/admin/login" method="POST">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input id="email" class="form-control" name="email" type="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input id="password" class="form-control" name="password" type="password" required>
-                </div>
-                <button class="btn-primary" type="submit">Sign In</button>
-                        </form>
-                        <p class="auth-footer">Use an admin account to access the dashboard.</p>
+                    <h2>Engine Shop</h2>
+                    <div style="color:var(--muted);font-size:0.95rem">Admin access area</div>
                 </div>
             </div>
-        </main>
+
+            <div class="auth-tabs">
+                <a href="/admin/login" class="auth-tab active">Sign In</a>
+                <a href="/admin/register" class="auth-tab">Create Account</a>
+            </div>
+
+            <div>
+                <h1>Admin <span style="color:#2563eb">Login</span></h1>
+
+                <% if (typeof success !== 'undefined' && success && success.length) { %>
+                    <div class="flash-success"><%= success[0] %></div>
+                <% } %>
+                <% if (error && error.length) { %>
+                    <div class="flash-error"><%= error[0] %></div>
+                <% } %>
+
+                <form action="/admin/login" method="POST">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input id="email" class="form-control" name="email" type="email"
+                               placeholder="admin@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input id="password" class="form-control" name="password" type="password"
+                               placeholder="Your password" required>
+                    </div>
+                    <button class="btn-primary" type="submit" style="width:100%;margin-top:0.5rem">Sign In</button>
+                </form>
+
+                <p class="auth-footer" style="margin-top:1rem">
+                    Don't have an account? <a href="/admin/register" style="color:#2563eb;font-weight:600">Create one</a>
+                </p>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
+

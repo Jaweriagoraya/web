@@ -1,10 +1,12 @@
-﻿const express = require("express");
+﻿require('dotenv').config();
+const express = require("express");
 const methodOverride = require("method-override");
 const path = require("path");
 const session = require('express-session');
 const MongoStoreLib = require('connect-mongo');
 const flash = require('connect-flash');
 const connectDB = require('./config/db');
+const apiRoutes = require('./routes/api');
 
 // Initialize App
 const app = express();
@@ -28,7 +30,7 @@ try {
 }
 
 app.use(session({
-    secret: 'replace_this_with_a_strong_secret',
+    secret: process.env.SESSION_SECRET || 'replace_this_with_a_strong_secret',
     resave: false,
     saveUninitialized: false,
     store: mongoStoreInstance,
@@ -72,6 +74,7 @@ const cartRoutes = require('./routes/cart');
 const adminRoutes = require('./routes/admin');
 
 // Use Routes
+app.use('/api/v1', apiRoutes);
 app.use('/', indexRoutes);
 app.use('/', authRoutes); // /login, /register, /logout
 app.use('/products', productRoutes);
