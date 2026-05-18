@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engine Clone</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/products.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="menu-toggle" id="menu-toggle">☰</div>
+
+    <ul class="nav-left">
+        <li><a href="/onsale-products" style="color:#dc2626;">Sale 🔥</a></li>
+        <li><a href="/products">All Products</a></li>
+        <% if (typeof allCategories !== 'undefined') { %>
+            <% allCategories.forEach(function(cat) { %>
+                <% if (cat.toLowerCase() !== 'home') { %>
+                    <li><a href="/products?category=<%= cat %>"><%= cat %></a></li>
+                <% } %>
+            <% }); %>
+        <% } %>
+    </ul>
+
+    <div class="logo">
+        <a href="/"><img src="/New_Logo_Engine.svg" alt="Engine Clone"></a>
+    </div>
+
+    <div class="nav-right">
+        <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+            <a href="/profile" class="nav-link">My Profile</a>
+            <a href="/logout"  class="nav-link">Logout</a>
+        <% } else { %>
+            <a href="/login"    class="nav-link">Login</a>
+            <a href="/register" class="nav-link button">Register</a>
+        <% } %>
+        <a href="/cart" class="nav-link">
+            Cart (<%= typeof cartItemCount !== 'undefined' ? cartItemCount : 0 %>)
+        </a>
+    </div>
+</header>
+
+<%- body %>
+<script src="/script.js"></script>
+<script>
+async function addToCart(id) {
+    try {
+        const res = await fetch(`/cart/add/${id}`, { method: 'POST' });
+        const data = await res.json();
+        if (data.success) { alert('Product added to cart!'); }
+        else { alert(data.message || 'Failed to add product.'); }
+    } catch (err) { console.error(err); alert('Something went wrong.'); }
+}
+</script>
+
+</body>
+</html>

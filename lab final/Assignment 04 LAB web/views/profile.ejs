@@ -1,0 +1,29 @@
+<style>
+    .profile-container { max-width: 600px; margin: 50px auto; padding: 30px; background: #fff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); font-family: sans-serif;}
+    .profile-header { text-align: center; margin-bottom: 30px; }
+    .profile-info { margin-bottom: 20px; font-size: 1.2em; }
+    .profile-info strong { display: inline-block; width: 100px; color: #555; }
+</style>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1 style="margin-bottom: 10px;">My Profile</h1>
+            <p style="color: #666;">Welcome back, <%= user.name %>!</p>
+        </div>
+        
+        <div class="profile-info">
+            <strong>Name:</strong> <%= user.name %>
+        </div>
+        <div class="profile-info">
+            <strong>Email:</strong> <%= user.email %>
+        </div>
+        <div class="profile-info">
+            <strong>Role:</strong> <span style="background: <%= user.role === 'admin' ? '#fecaca' : '#d1fae5' %>; color: <%= user.role === 'admin' ? '#991b1b' : '#065f46' %>; padding: 5px 10px; border-radius: 5px; font-size: 0.9em; font-weight:bold;"><%= user.role.toUpperCase() %></span>
+        </div>
+        
+        <% if (user.role === 'admin') { %>
+            <div style="margin-top: 40px; text-align: center;">
+                <a href="/admin" style="padding: 12px 25px; background: black; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Go to Admin Dashboard</a>
+            </div>
+        <% } %>
+    </div>
