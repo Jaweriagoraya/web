@@ -1,0 +1,45 @@
+﻿<%- include("./partials/header", { pageTitle: "Edit Product", activePage: "dashboard" }) %>
+
+<div class="form-card">
+    <% if (errors && errors.length) { %>
+        <div class="error-box">
+            <ul style="margin:0; padding-left:18px;">
+                <% errors.forEach(error => { %>
+                    <li><%= error %></li>
+                <% }) %>
+            </ul>
+        </div>
+    <% } %>
+
+    <form class="form-grid" action="/admin/edit/<%= product._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+        <label for="name">Product Name</label>
+        <input id="name" type="text" name="name" value="<%= product.name %>" required>
+
+        <label for="price">Price</label>
+        <input id="price" type="number" name="price" value="<%= product.price %>" required>
+
+        <label for="category">Category</label>
+        <select id="category" name="category" required>
+            <option value="">Choose category</option>
+            <% categories.forEach(cat => { %>
+                <option value="<%= cat %>" <%= product.category === cat ? 'selected' : '' %>><%= cat %></option>
+            <% }) %>
+        </select>
+
+        <label for="rating">Rating</label>
+        <input id="rating" type="number" name="rating" value="<%= product.rating %>" step="0.1">
+
+        <label for="stock">Stock</label>
+        <input id="stock" type="number" name="stock" value="<%= product.stock %>" required>
+
+        <label>Current Image</label>
+        <img src="<%= product.image %>" alt="Current image" class="product-thumb">
+
+        <label for="image">Upload New Image</label>
+        <input id="image" type="file" name="image" accept="image/*">
+
+        <button type="submit">Update Product</button>
+    </form>
+</div>
+
+<%- include("./partials/footer") %>

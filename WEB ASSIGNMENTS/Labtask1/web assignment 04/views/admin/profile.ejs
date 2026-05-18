@@ -1,0 +1,30 @@
+<%- include("./partials/header", { pageTitle: "My Profile", activePage: "profile" }) %>
+
+<div class="form-card" style="max-width: 600px;">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <div style="width: 100px; height: 100px; background: #e2e8f0; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #64748b;">
+            <%= currentUser.name.charAt(0).toUpperCase() %>
+        </div>
+        <h2 style="margin: 0; color: #111827;"><%= currentUser.name %></h2>
+        <p style="color: #64748b; margin: 5px 0;"><%= currentUser.role.toUpperCase() %></p>
+    </div>
+
+    <div class="form-grid">
+        <div style="padding: 15px; border-bottom: 1px solid #e2e8f0;">
+            <label style="display: block; font-size: 14px; color: #64748b; margin-bottom: 4px;">Email Address</label>
+            <div style="font-weight: 600; color: #111827;"><%= currentUser.email %></div>
+        </div>
+        
+        <div style="padding: 15px; border-bottom: 1px solid #e2e8f0;">
+            <label style="display: block; font-size: 14px; color: #64748b; margin-bottom: 4px;">Account Created</label>
+            <div style="font-weight: 600; color: #111827;"><%= new Date(currentUser.createdAt).toLocaleDateString() %></div>
+        </div>
+
+        <div style="margin-top: 20px; display: flex; gap: 10px;">
+            <a href="/admin/logout" class="button logout" style="background: #ef4444; flex: 1;">Logout</a>
+            <a href="/admin" class="button secondary" style="flex: 1;">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+
+<%- include("./partials/footer") %>
